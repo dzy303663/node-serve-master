@@ -2,14 +2,18 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var userSchema = new Schema({
     user_id: {type: Number},//id
-    headImg: {type: String,default: '/api/upload/1555939395767-IMG_0617.JPG'},//头像    
-    name: String,//名称
-    department: Number,//系号
-    role: String,
-    pw: String,
-    introduce: String,
-    tel: Number,
-    sex: String,
+    title: String,//标题
+    content: String,//内容
+    creator: Object,//上传人
+    img: String,//封面
+    view: {
+        type: Number,
+        default: 0
+    },//浏览量
+    feedback: [{
+        creator:{},
+        content:''
+    }],//反馈
     // meta 更新或录入数据的时间记录
     meta: {
         createAt: {

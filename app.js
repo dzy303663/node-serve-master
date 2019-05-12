@@ -66,9 +66,58 @@ mongoose.connect('mongodb://localhost:27017/tourismManage', function (err) {
 	}
 });
 
-var port = process.env.PORT || 5200; // 设置端口号：3000
+var port = process.env.PORT || 80; // 设置端口号：3000
 var server = app.listen(port); // 监听 port[3000]端口
 var io = require('socket.io')(server);
 
+const user = require('./models/user.js'); // 载入mongoose编译后的模型user
 
+app.use('/', require('./router/profile'))
+app.use('/', require('./router/news'))
+app.use('/', require('./router/upload'))
+
+app.all('/*', (req,res,next) => {
+	let user_id = req.cookies.user_id
+	if(user_id == undefined && req.path != '/login'){
+		res.send({code: 401});
+	}else{
+		next();
+	}
+})
+
+app.post('/login', function (req, res) {
+	let user_id = req.body.params.username;
+	let pw = req.body.params.password;
+	let res_data;
+	let findUser = (entity) => {
+		entity.findOne({
+			user_id: user_id
+		}, function (err, doc) {
+			if (err || doc == null) {
+				res_data = {
+					code: 201,
+					msg: "请正确检查用户名和密码",
+				}
+				res.send(res_data);
+			} else {
+				if (pw == doc.pw) {
+					res_data = {
+						code: 200,
+						msg: "登录成功！",
+						data: doc
+					}
+					res.cookie('user_id', user_id);
+					res.send(res_data);
+				} else {
+					res_data = {
+						code: 201,
+						msg: "密码错误",
+					}
+					res.send(res_data);
+				}
+			}
+		})
+	}
+	findUser(user);
+});
 module.exports = app;
