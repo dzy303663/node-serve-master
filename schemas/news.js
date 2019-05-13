@@ -5,7 +5,10 @@ var userSchema = new Schema({
     title: String,//标题
     content: String,//内容
     creator: Object,//上传人
-    img: String,//封面
+    img: {
+        type: String,
+        default: '/img'
+    },//封面
     view: {
         type: Number,
         default: 0

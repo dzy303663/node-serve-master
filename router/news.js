@@ -13,6 +13,13 @@ router.get('/user/news', function (req, res){
 		res.send(docs)
 	})
 })
+router.get('/news', function (req, res){
+	let res_data;
+	news.find({}).then((docs) => {
+		console.log('----',docs)
+		res.send(docs)
+	})
+})
 router.get('/user/news/detail', function (req, res){
 	let res_data;
 	let _id = req.query.id;

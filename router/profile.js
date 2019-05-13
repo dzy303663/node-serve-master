@@ -3,17 +3,23 @@ var router = express.Router()
 var user = require('../models/user')
 
 router.put('/user/add', function (req, res) {
-	let user_id = req.body.params.user_id;
+	console.log('params',req.body.params)
+	console.log('req',req.body)
+
+	let {user_id,pw,role} = req.body;
 	user.findOne({
 		user_id
 	}, (err, doc) => {
 		if (doc) {
-			res.send('该账号已存在')
+			res.send({errMsg:'该账号已存在'})
 		} else {
 			user.create({
 				user_id,
-				pw
-			}).exec(res.send('操作成功'));
+				pw,
+				role
+			},function(err,doc1,doc2){
+				res.send({msg:'操作成功'})
+			});
 		}
 	})
 })
@@ -65,5 +71,11 @@ router.post('/userInfo/report', (req, res) => {
 		})
 	}
 	findUser(user);
+})
+
+router.get('/user',(req,res) => {
+	user.find({},(err,docs)=>{
+		res.send(docs)
+	})
 })
 module.exports = router
