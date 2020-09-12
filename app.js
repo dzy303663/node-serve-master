@@ -67,27 +67,27 @@ mongoose.connect('mongodb://localhost:27017/tourismManage', function (err) {
 	}
 });
 
-var port = process.env.PORT || 80; // 设置端口号：3000
+var port = process.env.PORT || 3000; // 设置端口号：3000
 console.log(port)
 var server = app.listen(port); // 监听 port[3000]端口
 var io = require('socket.io')(server);
 
 const user = require('./models/user.js'); // 载入mongoose编译后的模型user
 
-app.use('/', require('./router/profile'))
-app.use('/', require('./router/news'))
-app.use('/', require('./router/upload'))
+app.use('/api', require('./router/profile'))
+app.use('/api', require('./router/news'))
+app.use('/api', require('./router/upload'))
 
 app.all('/*', (req,res,next) => {
 	let user_id = req.cookies.user_id
-	if(user_id == undefined && req.path != '/login'){
+	if(user_id == undefined && req.path != '/api/login'){
 		res.send({code: 401});
 	}else{
 		next();
 	}
 })
 
-app.post('/login', function (req, res) {
+app.post('/api/login', function (req, res) {
 	console.log('aaa')
 	let user_id = req.body.params.username;
 	let pw = req.body.params.password;
