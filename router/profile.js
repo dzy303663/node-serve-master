@@ -5,6 +5,8 @@ var user = require('../models/user')
 router.put('/user/add', function (req, res) {
 	console.log('params',req.body.params)
 	console.log('req',req.body)
+	console.log('req',req.body)
+	console.log('req',req.body)
 
 	let {user_id,pw,role} = req.body;
 	user.findOne({
