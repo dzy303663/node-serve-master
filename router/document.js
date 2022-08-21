@@ -2,14 +2,7 @@ var express=require('express')
 var router = express.Router()
 var document=require('../models/document')
 
-router.get('/file/relative', function (req, res){
-	let res_data;
-	console.log('req')
 
-	document.find().sort("-meta.createAt").exec((err,docs) => {
-		res.send(docs)
-	})
-})
 
 router.delete('/file/del',(req,res) => {
 	console.log(req.body)
