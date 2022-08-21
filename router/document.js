@@ -7,10 +7,6 @@ router.get('/file/relative', function (req, res){
 	console.log('req')
 	console.log('req')
 
-	document.find().sort("-meta.createAt").exec((err,docs) => {
-		res.send(docs)
-	})
-})
 
 router.delete('/file/del',(req,res) => {
 	console.log(req.body)
